@@ -1,15 +1,9 @@
 // create table
-var table_canvas = document.getElementById('table');
-var table_context = table_canvas.getContext('2d');
+var canvas = document.getElementById('table');
+var context = canvas.getContext('2d');
 
-table_canvas.style.display= 'block';
-table_context.fillRect(0, 0, table_canvas.width, table_canvas.height);
-
-// var player = document.getElementById('player');
-// var player_context = player.getContext('2d');
-//
-// player_context.fillStyle = "blue";
-// player_context.fillRect(0, 0, player.width, player.height);
+canvas.style.display= 'block';
+context.fillRect(0, 0, canvas.width, canvas.height);
 
 // Paddle constructor
 function Paddle(x, y) {
@@ -20,35 +14,56 @@ function Paddle(x, y) {
    this.color = "#0000FF";
 }
 
-Paddle.prototype.render = function() {
-   table_context.fillStyle = this.color;
-   table_context.fillRect(this.x, this.y, this.width, this.height);
+// Ball constructor
+function Ball(x, y) {
+  this.x = x;
+  this.y = y;
+  this.radius = 5;
 }
 
+// Player and Computer constructors
 function Player() {
-   this.paddle = new Paddle(10, 180);
+   this.paddle = new Paddle(10, 150);
 }
 
 function Computer() {
-   this.paddle = new Paddle(748, 180);
+   this.paddle = new Paddle(743, 150);
+}
+
+// Append render method to prototypes
+Paddle.prototype.render = function() {
+   context.fillStyle = this.color;
+   context.fillRect(this.x, this.y, this.width, this.height);
 }
 
 Player.prototype.render = function() {
-   this.paddle.render();
+    this.paddle.render();
 };
 
 Computer.prototype.render = function() {
-   this.paddle.render();
+    this.paddle.render();
 };
 
+Ball.prototype.render = function() {
+    context.beginPath();
+    context.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
+    context.fillStyle = "#0000FF";
+    context.fill();
+}
+
+// Create objects from the constructors
 var player = new Player();
 var computer = new Computer();
+var ball = new Ball(384,192);
 
+// Render elements
 var render = function() {
   player.render();
   computer.render();
+  ball.render();
 };
 
+// Calls render fuction
 window.onload = function() {
   render();
 }
