@@ -23,8 +23,8 @@ function Ball(x, y) {
   this.x = x;
   this.y = y;
   this.radius = 5;
-  this.x_speed = 3;
-  this.y_speed = 3;
+  this.x_speed = 5;
+  this.y_speed = 5;
 }
 
 // Player and Computer constructors
@@ -53,8 +53,32 @@ Computer.prototype.render = function() {
 Ball.prototype.render = function() {
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
-    context.fillStyle = "#0000FF";
+    context.fillStyle = "#F96";
     context.fill();
+}
+
+Ball.prototype.update = function(player, computer) {
+    this.x += this.x_speed;
+    this.y += this.y_speed;
+
+    // bottom and top wall
+    if (this.y < 5 || this.y > 379) {
+        this.y_speed = -this.y_speed;
+    }
+
+    // left wall/paddle
+    if (this.x < 0) {
+        // computer score here
+    } else if (this.x - 5 < player.paddle.x + player.paddle.width && this.y < player.paddle.y + player.paddle.height) {
+        this.x_speed = -this.x_speed;
+    }
+
+    // right wall/paddle
+    if (this.x > 763) {
+        // player score here
+    } else if (this.x + 5 > computer.paddle.x && this.y < computer.paddle.y + player.paddle.height ) {
+        this.x_speed = -this.x_speed;
+    }
 }
 
 // Apprend move method to paddle prototype
@@ -86,6 +110,7 @@ Paddle.prototype.update = function() {
 
 var update = function() {
     player.paddle.update();
+    ball.update(player, computer);
 }
 
 // Create objects from the constructors
@@ -101,14 +126,15 @@ var render = function() {
   ball.render();
 };
 
-// Calls render fuction
-window.onload = function() {
-   step();
-}
 
 // Animation
 var animate = window.requestAnimationFrame ||
                   function(callback) {window.setTimeout(callback, 10000/60) };
+
+// Calls render fuction
+window.onload = function() {
+   step();
+}
 
 var step = function() {
    update();
