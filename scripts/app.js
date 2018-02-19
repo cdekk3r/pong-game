@@ -12,10 +12,9 @@ function drawCanvas() {
 function Paddle(x, y) {
    this.x = x;
    this.y = y;
-   this.width = 15;
+   this.width = 10;
    this.height = 80;
    this.color = "#0000FF";
-   this.speed = 5;
 }
 
 // Ball constructor
@@ -23,8 +22,8 @@ function Ball(x, y) {
   this.x = x;
   this.y = y;
   this.radius = 5;
-  this.x_speed = 5;
-  this.y_speed = 5;
+  this.x_speed = 7;
+  this.y_speed = 7;
 }
 
 // Player and Computer constructors
@@ -33,7 +32,7 @@ function Player() {
 }
 
 function Computer() {
-   this.paddle = new Paddle(748, 152);
+   this.paddle = new Paddle(753, 152);
 }
 
 // Append render method to prototypes
@@ -60,25 +59,38 @@ Ball.prototype.render = function() {
 Ball.prototype.update = function(player, computer) {
     this.x += this.x_speed;
     this.y += this.y_speed;
+    var leftEdge = this.x - 5;
+    var rightEdge = this.x + 5;
+    var topEdge = this.y - 5;
+    var botEdge = this.y + 5;
 
     // bottom and top wall
-    if (this.y < 5 || this.y > 379) {
+    if (topEdge < 0 || botEdge > 384) {
         this.y_speed = -this.y_speed;
     }
 
     // left wall/paddle
-    if (this.x < 0) {
-        // computer score here
-    } else if (this.x - 5 < player.paddle.x + player.paddle.width && this.y < player.paddle.y + player.paddle.height) {
+    if (leftEdge < 0) {
+        this.x_speed = 0;
+        this.y_speed = 0;
+    } else if (leftEdge <= player.paddle.x + player.paddle.width && topEdge <= player.paddle.y + player.paddle.height &&
+                botEdge >= player.paddle.y) {
         this.x_speed = -this.x_speed;
     }
 
     // right wall/paddle
-    if (this.x > 763) {
-        // player score here
-    } else if (this.x + 5 > computer.paddle.x && this.y < computer.paddle.y + player.paddle.height ) {
+    if (rightEdge > 763) {
+        this.x_speed = 0;
+        this.y_speed = 0;
+    } else if (rightEdge >= computer.paddle.x && topEdge <= computer.paddle.y + player.paddle.height &&
+                botEdge >= computer.paddle.y) {
         this.x_speed = -this.x_speed;
     }
+}
+
+
+Computer.prototype.update = function(ball) {
+    var y_ball = ball.y;
 }
 
 // Apprend move method to paddle prototype
@@ -111,6 +123,7 @@ Paddle.prototype.update = function() {
 var update = function() {
     player.paddle.update();
     ball.update(player, computer);
+    computer.update(ball);
 }
 
 // Create objects from the constructors
