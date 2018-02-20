@@ -70,12 +70,18 @@ Ball.prototype.update = function(player, computer) {
     }
 
     // left wall/paddle
-    if (leftEdge < 0) {
+    if (leftEdge < 5) {
         this.x_speed = 0;
         this.y_speed = 0;
     } else if (leftEdge <= player.paddle.x + player.paddle.width && topEdge <= player.paddle.y + player.paddle.height &&
-                botEdge >= player.paddle.y) {
+                botEdge >= player.paddle.y && this.x >= player.paddle.x + player.paddle.width) {
         this.x_speed = -this.x_speed;
+    } else if (topEdge <= player.paddle.y + player.paddle.height && botEdge >= player.paddle.y + player.paddle.height && this.x >= player.paddle.x &&
+                this.x <= player.paddle.x + player.paddle.width) {
+        this.y_speed = -this.y_speed;
+    } else if (botEdge >= player.paddle.y && topEdge <= player.paddle.y && rightEdge >= player.paddle.x &&
+                this.x <= player.paddle.x + player.paddle.width) {
+        this.y_speed = -this.y_speed;
     }
 
     // right wall/paddle
@@ -83,8 +89,14 @@ Ball.prototype.update = function(player, computer) {
         this.x_speed = 0;
         this.y_speed = 0;
     } else if (rightEdge >= computer.paddle.x && topEdge <= computer.paddle.y + player.paddle.height &&
-                botEdge >= computer.paddle.y) {
+                botEdge >= computer.paddle.y && this.x <= computer.paddle.x) {
         this.x_speed = -this.x_speed;
+    } else if (botEdge >= computer.paddle.y && topEdge <= computer.paddle.y && rightEdge >= computer.paddle.x &&
+                leftEdge <= computer.paddle.x + computer.paddle.width) {
+        this.y_speed = -this.y_speed;
+    } else if (topEdge <= computer.paddle.y + computer.paddle.height && botEdge >= computer.paddle.y + computer.paddle.height && rightEdge >= computer.paddle.x &&
+                leftEdge <= computer.paddle.x + computer.paddle.width) {
+        this.y_speed = -this.y_speed;
     }
 }
 
