@@ -1,6 +1,8 @@
 // create table
 var canvas = document.getElementById('table');
 var context = canvas.getContext('2d');
+var playerScore = 0;
+var computerScore = 0;
 
 function drawCanvas() {
     canvas.style.display= 'block';
@@ -22,8 +24,12 @@ function Ball(x, y) {
   this.x = x;
   this.y = y;
   this.radius = 5;
-  this.x_speed = 7;
-  this.y_speed = 7;
+  this.x_speed = 5;
+  this.y_speed = 5;
+}
+
+var random = function() {
+  return Math.floor((Math.random() * 7) + 4);
 }
 
 // Player and Computer constructors
@@ -71,8 +77,11 @@ Ball.prototype.update = function(player, computer) {
 
     // left wall/paddle
     if (leftEdge < 5) {
-        this.x_speed = 0;
-        this.y_speed = 0;
+        computerScore += 1;
+        if (computerScore == 11) {
+          // player wins
+        }
+        //reset table
     } else if (leftEdge <= player.paddle.x + player.paddle.width && topEdge <= player.paddle.y + player.paddle.height &&
                 botEdge >= player.paddle.y && this.x >= player.paddle.x + player.paddle.width) {
         this.x_speed = -this.x_speed;
@@ -86,8 +95,11 @@ Ball.prototype.update = function(player, computer) {
 
     // right wall/paddle
     if (rightEdge > 763) {
-        this.x_speed = 0;
-        this.y_speed = 0;
+        playerScore += 1;
+        if (playerScore == 11) {
+          // player wins
+        }
+        // reset table
     } else if (rightEdge >= computer.paddle.x && topEdge <= computer.paddle.y + player.paddle.height &&
                 botEdge >= computer.paddle.y && this.x <= computer.paddle.x) {
         this.x_speed = -this.x_speed;
@@ -102,7 +114,19 @@ Ball.prototype.update = function(player, computer) {
 
 
 Computer.prototype.update = function(ball) {
-    var y_ball = ball.y;
+    var distance = ball.y - (this.paddle.y + this.paddle.width/2);
+
+    if (ball.x < 0 || ball.x > 768) {
+      this.paddle.y = 152;
+    }
+
+    if (distance > 0) {
+      distance = 6;
+    } else {
+      distance = -6;
+    }
+
+    this.paddle.move(distance);
 }
 
 // Apprend move method to paddle prototype
