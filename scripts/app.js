@@ -78,10 +78,14 @@ Ball.prototype.update = function(player, computer) {
     // left wall/paddle
     if (this.x < 0) {
         computerScore += 1;
+        this.x = canvas.width/2;
+        this.y = canvas.height/2;
+        this.x_speed = 0;
+        this.y_speed = 0;
         if (computerScore == 11) {
-          // alert("Computer wins!");
+          alert("Computer wins!");
+          return;
         }
-        return render();
     } else if (leftEdge <= player.paddle.x + player.paddle.width && topEdge <= player.paddle.y + player.paddle.height &&
                 botEdge >= player.paddle.y && this.x >= player.paddle.x + player.paddle.width) {
         this.x_speed = -this.x_speed;
@@ -96,6 +100,10 @@ Ball.prototype.update = function(player, computer) {
     // right wall/paddle
     if (rightEdge > 763) {
         playerScore += 1;
+        this.x = canvas.width/2;
+        this.y = canvas.height/2;
+        this.x_speed = 0;
+        this.y_speed = 0;
         if (playerScore == 11) {
           alert("Player wins!");
         }
@@ -185,10 +193,15 @@ window.onload = function() {
   render();
 }
 
+window.onclick = function() {
+  step();
+  window.onclick = () => {};
+}
+
 var step = function() {
     update();
     render();
-    requestId = animate(step);
+    animate(step);
 }
 
 var keyPressed = {}
