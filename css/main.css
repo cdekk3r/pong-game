@@ -7,3 +7,32 @@ h1 {
   margin-bottom: 10px;
   color: black;
 }
+
+.box {
+  text-align: center;
+}
+
+label {
+  font-size: 16px;
+  position: relative;
+}
+
+#player {
+  padding-right: 10px;
+}
+
+#computer {
+  padding-left: 10px;
+}
+
+#pScore {
+  font-size: 40px;
+  padding-right: 5%;
+}
+
+#cScore {
+  font-size: 40px;
+  padding-left: 5%;
+  position: relative;
+  bottom: 46px;
+}

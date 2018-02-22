@@ -15,7 +15,7 @@ function Paddle(x, y) {
    this.x = x;
    this.y = y;
    this.width = 10;
-   this.height = 80;
+   this.height = 70;
    this.color = "#0000FF";
 }
 
@@ -29,7 +29,7 @@ function Ball(x, y) {
 }
 
 var random = function() {
-  return Math.floor((Math.random() * 7) + 4);
+  return Math.floor((Math.random() * 6) + 3);
 }
 
 // Player and Computer constructors
@@ -76,12 +76,12 @@ Ball.prototype.update = function(player, computer) {
     }
 
     // left wall/paddle
-    if (leftEdge < 5) {
+    if (this.x < 0) {
         computerScore += 1;
         if (computerScore == 11) {
-          // player wins
+          // alert("Computer wins!");
         }
-        //reset table
+        return render();
     } else if (leftEdge <= player.paddle.x + player.paddle.width && topEdge <= player.paddle.y + player.paddle.height &&
                 botEdge >= player.paddle.y && this.x >= player.paddle.x + player.paddle.width) {
         this.x_speed = -this.x_speed;
@@ -97,9 +97,8 @@ Ball.prototype.update = function(player, computer) {
     if (rightEdge > 763) {
         playerScore += 1;
         if (playerScore == 11) {
-          // player wins
+          alert("Player wins!");
         }
-        // reset table
     } else if (rightEdge >= computer.paddle.x && topEdge <= computer.paddle.y + player.paddle.height &&
                 botEdge >= computer.paddle.y && this.x <= computer.paddle.x) {
         this.x_speed = -this.x_speed;
@@ -118,12 +117,13 @@ Computer.prototype.update = function(ball) {
 
     if (ball.x < 0 || ball.x > 768) {
       this.paddle.y = 152;
+      return;
     }
 
     if (distance > 0) {
-      distance = 6;
+      distance = 7;
     } else {
-      distance = -6;
+      distance = -7;
     }
 
     this.paddle.move(distance);
@@ -182,13 +182,28 @@ var animate = window.requestAnimationFrame ||
 
 // Calls render fuction
 window.onload = function() {
-   step();
+  render();
 }
 
+window.onClick = function() {
+  step();
+  window.onClick = 0;
+}
+
+// var playing = false;
+// window.onClick = function() {
+//   if (playing === true) {
+//     return;
+//   } else if (playing === false) {
+//     step();
+//     window.onClick = 0;
+//   }
+// }
+
 var step = function() {
-   update();
-   render();
-   animate(step);
+    update();
+    render();
+    animate(step);
 }
 
 var keyPressed = {}

@@ -8,7 +8,14 @@
 </head>
 <h1><strong>Pong</strong></h1>
 <body>
-   <canvas id="table" width="768" height="384"></canvas>
+   <canvas id="table" width="768" height="384" onclick="step()"></canvas>
+
+   <div class="box">
+     <label id="player"><strong>Player</strong></label>
+     <label id="computer"><strong>Computer</strong></label>
+     <div id="pScore">0</div>
+     <div id="cScore">0</div>
+   </div>
 
    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
    <script src="scripts/app.js"></script>
