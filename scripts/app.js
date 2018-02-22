@@ -185,25 +185,10 @@ window.onload = function() {
   render();
 }
 
-window.onClick = function() {
-  step();
-  window.onClick = 0;
-}
-
-// var playing = false;
-// window.onClick = function() {
-//   if (playing === true) {
-//     return;
-//   } else if (playing === false) {
-//     step();
-//     window.onClick = 0;
-//   }
-// }
-
 var step = function() {
     update();
     render();
-    animate(step);
+    requestId = animate(step);
 }
 
 var keyPressed = {}
