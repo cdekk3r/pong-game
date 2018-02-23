@@ -27,12 +27,12 @@ label {
 
 #pScore {
   font-size: 40px;
-  padding-right: 5%;
+  padding-right: 9%;
 }
 
 #cScore {
   font-size: 40px;
-  padding-left: 5%;
+  padding-left: 7%;
   position: relative;
   bottom: 46px;
 }

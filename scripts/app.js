@@ -24,12 +24,12 @@ function Ball(x, y) {
   this.x = x;
   this.y = y;
   this.radius = 5;
-  this.x_speed = 5;
+  this.x_speed = -5;
   this.y_speed = 5;
 }
 
 var random = function() {
-  return Math.floor((Math.random() * 6) + 3);
+  return Math.floor((Math.random() * 6) + 4);
 }
 
 // Player and Computer constructors
@@ -62,6 +62,11 @@ Ball.prototype.render = function() {
     context.fill();
 }
 
+var serveBall = function() {
+    ball.x_speed = random();
+    ball.y_speed = random();
+}
+
 Ball.prototype.update = function(player, computer) {
     this.x += this.x_speed;
     this.y += this.y_speed;
@@ -78,13 +83,19 @@ Ball.prototype.update = function(player, computer) {
     // left wall/paddle
     if (this.x < 0) {
         computerScore += 1;
+        document.getElementById("cScore").innerHTML = computerScore;
         this.x = canvas.width/2;
         this.y = canvas.height/2;
         this.x_speed = 0;
         this.y_speed = 0;
+
+        window.onclick = function() {
+          serveBall();
+          window.onclick = () => {};
+        }
+
         if (computerScore == 11) {
-          alert("Computer wins!");
-          return;
+          setTimeout(function(){ alert("Computer wins!"); }, 10);
         }
     } else if (leftEdge <= player.paddle.x + player.paddle.width && topEdge <= player.paddle.y + player.paddle.height &&
                 botEdge >= player.paddle.y && this.x >= player.paddle.x + player.paddle.width) {
@@ -100,12 +111,19 @@ Ball.prototype.update = function(player, computer) {
     // right wall/paddle
     if (rightEdge > 763) {
         playerScore += 1;
+        document.getElementById("pScore").innerHTML = playerScore;
         this.x = canvas.width/2;
         this.y = canvas.height/2;
         this.x_speed = 0;
         this.y_speed = 0;
+
+        window.onclick = function() {
+          serveBall();
+          window.onclick = () => {};
+        }
+
         if (playerScore == 11) {
-          alert("Player wins!");
+          setTimeout(function(){ alert("Player wins!"); }, 10);
         }
     } else if (rightEdge >= computer.paddle.x && topEdge <= computer.paddle.y + player.paddle.height &&
                 botEdge >= computer.paddle.y && this.x <= computer.paddle.x) {
@@ -129,9 +147,9 @@ Computer.prototype.update = function(ball) {
     }
 
     if (distance > 0) {
-      distance = 7;
+      distance = (7*.9);
     } else {
-      distance = -7;
+      distance = (-7*.9);
     }
 
     this.paddle.move(distance);
