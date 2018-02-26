@@ -18,11 +18,11 @@ label {
 }
 
 #player {
-  padding-right: 10px;
+  padding-right: 30px;
 }
 
 #computer {
-  padding-left: 10px;
+  padding-left: 30px;
 }
 
 #pScore {
@@ -35,4 +35,22 @@ label {
   padding-left: 7%;
   position: relative;
   bottom: 46px;
+}
+
+#cWin {
+  font-size: 40px;
+  color: red;
+  visibility: hidden;
+  position: fixed;
+  top: 10%;
+  right: 35%;
+}
+
+#pWin {
+  font-size: 40px;
+  color: red;
+  visibility: hidden;
+  position: fixed;
+  top: 10%;
+  right: 37%;
 }
