@@ -24,17 +24,17 @@ function Ball(x, y) {
   this.x = x;
   this.y = y;
   this.radius = 5;
-  this.x_speed = -5;
-  this.y_speed = 5;
+  this.x_speed = -6;
+  this.y_speed = 6;
 }
 
 var random = function() {
-  return Math.floor((Math.random() * 6) + 4);
+  return Math.floor((Math.random() * 7) + 5);
 }
 
 // Player and Computer constructors
 function Player() {
-   this.paddle = new Paddle(5, 50);
+   this.paddle = new Paddle(5, 152);
 }
 
 function Computer() {
@@ -63,8 +63,9 @@ Ball.prototype.render = function() {
 }
 
 var serveBall = function() {
-    ball.x_speed = random();
-    ball.y_speed = random();
+    ball.x_speed = 5;
+    ball.y_speed = 5;
+    // paddleContact = 0;
 }
 
 Ball.prototype.update = function(player, computer) {
@@ -74,6 +75,7 @@ Ball.prototype.update = function(player, computer) {
     var rightEdge = this.x + 5;
     var topEdge = this.y - 5;
     var botEdge = this.y + 5;
+    // var paddleContact = 0;
 
     // bottom and top wall
     if (topEdge < 0 || botEdge > 384) {
@@ -95,7 +97,7 @@ Ball.prototype.update = function(player, computer) {
           document.getElementById('cWin').style.visibility='hidden';
         }
 
-        if (computerScore == 11) {
+        if (computerScore == 2) {
           document.getElementById('cWin').style.visibility='visible';
           computerScore = 0;
           playerScore = 0;
@@ -105,6 +107,11 @@ Ball.prototype.update = function(player, computer) {
     } else if (leftEdge <= player.paddle.x + player.paddle.width && topEdge <= player.paddle.y + player.paddle.height &&
                 botEdge >= player.paddle.y && this.x >= player.paddle.x + player.paddle.width) {
         this.x_speed = -this.x_speed;
+        // paddleContact += 1;
+        //
+        // if (paddleContact > 2) {
+        //   this.x_speed++;
+        // }
     } else if (topEdge <= player.paddle.y + player.paddle.height && botEdge >= player.paddle.y + player.paddle.height && this.x >= player.paddle.x &&
                 this.x <= player.paddle.x + player.paddle.width) {
         this.y_speed = -this.y_speed;
@@ -114,7 +121,7 @@ Ball.prototype.update = function(player, computer) {
     }
 
     // right wall/paddle
-    if (this.x > 763) {
+    if (this.x > 768) {
         playerScore += 1;
         document.getElementById('pScore').innerHTML = playerScore;
         this.x = canvas.width/2;
@@ -128,7 +135,7 @@ Ball.prototype.update = function(player, computer) {
           document.getElementById('pWin').style.visibility='hidden';
         }
 
-        if (playerScore == 11) {
+        if (playerScore == 2) {
           document.getElementById("pWin").style.visibility="visible";
           computerScore = 0;
           playerScore = 0;
@@ -157,9 +164,9 @@ Computer.prototype.update = function(ball) {
     }
 
     if (distance > 0) {
-      distance = (7*.9);
+      distance = (6*.9);
     } else {
-      distance = (-7*.9);
+      distance = (-6*.9);
     }
 
     this.paddle.move(distance);
